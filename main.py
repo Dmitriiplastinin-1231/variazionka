@@ -152,9 +152,11 @@ class OptimizationGUI:
     def get_function_data(self):
         if self.func_var.get() == "f1":
             return f1, grad_f1, hessian_f1, (-2, 2, -1, 3)
-        return f2, grad_f2, hessian_f2, (-5, 5, -5, 5)
+        else:
+            return f2, grad_f2, hessian_f2, (-5, 5, -5, 5)
 
     def draw_contours(self, f, xmin, xmax, ymin, ymax):
+        """Рисует контуры на текущей оси."""
         x = np.linspace(xmin, xmax, 200)
         y = np.linspace(ymin, ymax, 200)
         X, Y = np.meshgrid(x, y)
