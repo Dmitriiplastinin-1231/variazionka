@@ -9,20 +9,20 @@ def armijo_line_search(
     min_alpha=1e-12,
     max_iter=60,
 ):
-    f0 = f(x)
+    f_at_x = f(x)
     slope = grad_x.dot(d)
 
     if slope >= 0:
         return 0.0
 
-    alpha = alpha0
+    step = alpha0
     for _ in range(max_iter):
-        if alpha < min_alpha:
+        if step < min_alpha:
             return 0.0
 
-        if f(x + alpha * d) <= f0 + c * alpha * slope:
-            return alpha
+        if f(x + step * d) <= f_at_x + c * step * slope:
+            return step
 
-        alpha *= beta
+        step *= beta
 
     return 0.0

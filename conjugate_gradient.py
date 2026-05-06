@@ -1,19 +1,25 @@
 from armijo import armijo_line_search
 
+
 def conjugate_gradient_fr(f, grad, start, max_iter=1000, tol=1e-6, history=True):
-    x = start
-    g = grad(x)
-    d = -g
-    hist = [x] if history else None
+    point = start
+    grad_val = grad(point)
+    direction = -grad_val
+    track = [point] if history else None
+
     for _ in range(max_iter):
-        if g.norm() < tol:
+        if grad_val.norm() < tol:
             break
-        alpha = armijo_line_search(f, x, d, g)
-        x_new = x + alpha * d
-        g_new = grad(x_new)
-        beta = g_new.dot(g_new) / g.dot(g)
-        d = -g_new + beta * d
-        x, g = x_new, g_new
+
+        step = armijo_line_search(f, point, direction, grad_val)
+        next_point = point + step * direction
+        next_grad = grad(next_point)
+
+        beta = next_grad.dot(next_grad) / grad_val.dot(grad_val)
+        direction = -next_grad + beta * direction
+
+        point, grad_val = next_point, next_grad
         if history:
-            hist.append(x)
-    return x, f(x), hist
+            track.append(point)
+
+    return point, f(point), track
