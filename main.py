@@ -95,30 +95,14 @@ class OptimizationGUI:
         )
         subtitle.pack(anchor="w", pady=(0, 10))
 
-        func_frame = ttk.Labelframe(control_frame, text="Целевая функция", style="Card.TLabelframe")
-        func_frame.pack(fill=tk.X, pady=(0, 10))
-
-        ttk.Label(func_frame, text="Формулы:", style="Section.TLabel").pack(
-            anchor="w", pady=(0, 2)
-        )
-        self.f1_label = ttk.Label(
-            func_frame, text="f_1(x) = 100(x_2 - x_1^2)^2 + 5(1 - x_1)^2"
-        )
-        self.f1_label.pack(anchor="w")
-        self.f2_label = ttk.Label(
-            func_frame,
-            text="f_2(x) = (x_1^2 + x_2 - 11)^2 + (x_1 + x_2^2 - 7)^2",
-        )
-        self.f2_label.pack(anchor="w", pady=(0, 6))
-
-        radio_frame = ttk.Frame(func_frame)
-        radio_frame.pack(anchor="w")
-        ttk.Radiobutton(
-            radio_frame, text="f1", variable=self.func_var, value="f1"
-        ).pack(side=tk.LEFT, padx=(0, 12))
-        ttk.Radiobutton(
-            radio_frame, text="f2", variable=self.func_var, value="f2"
-        ).pack(side=tk.LEFT)
+        action_frame = ttk.Frame(control_frame)
+        action_frame.pack(fill=tk.X, pady=(0, 10))
+        ttk.Button(
+            action_frame,
+            text="Оптимизировать",
+            style="Accent.TButton",
+            command=self.optimize,
+        ).pack(fill=tk.X)
 
         methods_frame = ttk.Labelframe(
             control_frame, text="Методы", style="Card.TLabelframe"
@@ -144,18 +128,32 @@ class OptimizationGUI:
             variable=self.methods["newton"],
         ).pack(anchor="w")
 
-        start_frame = ttk.Labelframe(
-            control_frame, text="Начальная точка", style="Card.TLabelframe"
+        func_frame = ttk.Labelframe(
+            control_frame, text="Целевая функция", style="Card.TLabelframe"
         )
-        start_frame.pack(fill=tk.X, pady=(0, 10))
-        coords_frame = ttk.Frame(start_frame)
-        coords_frame.pack(anchor="w")
-        ttk.Label(coords_frame, text="x0", width=3).grid(row=0, column=0, sticky=tk.W)
-        ttk.Entry(coords_frame, textvariable=self.x0_var, width=8).grid(
-            row=0, column=1, padx=(0, 10)
+        func_frame.pack(fill=tk.X, pady=(0, 10))
+
+        ttk.Label(func_frame, text="Формулы:", style="Section.TLabel").pack(
+            anchor="w", pady=(0, 2)
         )
-        ttk.Label(coords_frame, text="y0", width=3).grid(row=0, column=2, sticky=tk.W)
-        ttk.Entry(coords_frame, textvariable=self.y0_var, width=8).grid(row=0, column=3)
+        self.f1_label = ttk.Label(
+            func_frame, text="f_1(x) = 100(x_2 - x_1^2)^2 + 5(1 - x_1)^2"
+        )
+        self.f1_label.pack(anchor="w")
+        self.f2_label = ttk.Label(
+            func_frame,
+            text="f_2(x) = (x_1^2 + x_2 - 11)^2 + (x_1 + x_2^2 - 7)^2",
+        )
+        self.f2_label.pack(anchor="w", pady=(0, 6))
+
+        radio_frame = ttk.Frame(func_frame)
+        radio_frame.pack(anchor="w")
+        ttk.Radiobutton(
+            radio_frame, text="f1", variable=self.func_var, value="f1"
+        ).pack(side=tk.LEFT, padx=(0, 12))
+        ttk.Radiobutton(
+            radio_frame, text="f2", variable=self.func_var, value="f2"
+        ).pack(side=tk.LEFT)
 
         bounds_frame = ttk.Labelframe(
             control_frame, text="Область графика", style="Card.TLabelframe"
@@ -172,11 +170,18 @@ class OptimizationGUI:
         ttk.Entry(grid_frame, textvariable=self.ymin_var, width=6).grid(row=1, column=2)
         ttk.Entry(grid_frame, textvariable=self.ymax_var, width=6).grid(row=1, column=3)
 
-        action_frame = ttk.Frame(control_frame)
-        action_frame.pack(fill=tk.X, pady=(0, 10))
-        ttk.Button(action_frame, text="Оптимизировать", style="Accent.TButton", command=self.optimize).pack(
-            fill=tk.X
+        start_frame = ttk.Labelframe(
+            control_frame, text="Начальная точка", style="Card.TLabelframe"
         )
+        start_frame.pack(fill=tk.X, pady=(0, 10))
+        coords_frame = ttk.Frame(start_frame)
+        coords_frame.pack(anchor="w")
+        ttk.Label(coords_frame, text="x0", width=3).grid(row=0, column=0, sticky=tk.W)
+        ttk.Entry(coords_frame, textvariable=self.x0_var, width=8).grid(
+            row=0, column=1, padx=(0, 10)
+        )
+        ttk.Label(coords_frame, text="y0", width=3).grid(row=0, column=2, sticky=tk.W)
+        ttk.Entry(coords_frame, textvariable=self.y0_var, width=8).grid(row=0, column=3)
 
         result_frame = ttk.Labelframe(
             control_frame, text="Результаты", style="Card.TLabelframe"
